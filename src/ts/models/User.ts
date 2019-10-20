@@ -11,7 +11,7 @@ class User {
   }
 
   set(update: UserProps): void {
-    this.data = { ...this.data, ...update };
+    Object.assign(this.data, update);
   }
 
   on(eventName: string, callback: CallbackFn): void {
@@ -30,10 +30,24 @@ class User {
 
   async fetch() {
     try {
+      const id = this.get("id");
       const { data }: AxiosResponse = await axios.get(
-        `http://localhost:3000/users/${this.get("id")}`,
+        `http://localhost:3000/users/${id}`,
       );
       this.set(data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async save() {
+    try {
+      const id = this.get("id");
+      if (id) {
+        await axios.put(`http://localhost:3000/users/${id}`, this.data);
+      } else {
+        await axios.post("http://localhost:3000/users", this.data);
+      }
     } catch (error) {
       console.error(error);
     }
