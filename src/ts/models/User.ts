@@ -1,4 +1,5 @@
 import { UserProps, EventsData, NumOrStr, CallbackFn } from "../ts-utils/";
+import axios, { AxiosResponse } from "axios";
 
 class User {
   events: EventsData = {};
@@ -25,6 +26,17 @@ class User {
     handlers.forEach(callback => {
       callback();
     });
+  }
+
+  async fetch() {
+    try {
+      const { data }: AxiosResponse = await axios.get(
+        `http://localhost:3000/users/${this.get("id")}`,
+      );
+      this.set(data);
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
 
