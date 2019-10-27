@@ -2205,69 +2205,7 @@ function () {
 }();
 
 exports.default = Model;
-},{}],"ts/models/User.ts":[function(require,module,exports) {
-"use strict";
-
-var __extends = this && this.__extends || function () {
-  var _extendStatics = function extendStatics(d, b) {
-    _extendStatics = Object.setPrototypeOf || {
-      __proto__: []
-    } instanceof Array && function (d, b) {
-      d.__proto__ = b;
-    } || function (d, b) {
-      for (var p in b) {
-        if (b.hasOwnProperty(p)) d[p] = b[p];
-      }
-    };
-
-    return _extendStatics(d, b);
-  };
-
-  return function (d, b) {
-    _extendStatics(d, b);
-
-    function __() {
-      this.constructor = d;
-    }
-
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-  };
-}();
-
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var systems_1 = require("../systems");
-
-var Model_1 = __importDefault(require("./Model"));
-
-var rootUrl = "http://localhost:3000/users";
-
-var User =
-/** @class */
-function (_super) {
-  __extends(User, _super);
-
-  function User() {
-    return _super !== null && _super.apply(this, arguments) || this;
-  }
-
-  User.buildUser = function (attrs) {
-    return new User(new systems_1.Attributing(attrs), new systems_1.Eventing(), new systems_1.Syncing(rootUrl));
-  };
-
-  return User;
-}(Model_1.default);
-
-exports.default = User;
-},{"../systems":"ts/systems/index.ts","./Model":"ts/models/Model.ts"}],"ts/models/Collection.ts":[function(require,module,exports) {
+},{}],"ts/models/Collection.ts":[function(require,module,exports) {
 "use strict";
 
 var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
@@ -2486,7 +2424,77 @@ function () {
 }();
 
 exports.default = Collection;
-},{"axios":"../node_modules/axios/index.js","../systems":"ts/systems/index.ts"}],"ts/models/index.ts":[function(require,module,exports) {
+},{"axios":"../node_modules/axios/index.js","../systems":"ts/systems/index.ts"}],"ts/models/User.ts":[function(require,module,exports) {
+"use strict";
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var systems_1 = require("../systems");
+
+var Model_1 = __importDefault(require("./Model"));
+
+var Collection_1 = __importDefault(require("./Collection"));
+
+var rootUrl = "http://localhost:3000/users";
+
+var User =
+/** @class */
+function (_super) {
+  __extends(User, _super);
+
+  function User() {
+    return _super !== null && _super.apply(this, arguments) || this;
+  }
+
+  User.buildUser = function (attrs) {
+    return new User(new systems_1.Attributing(attrs), new systems_1.Eventing(), new systems_1.Syncing(rootUrl));
+  };
+
+  User.buildUserCollection = function () {
+    return new Collection_1.default("http://localhost:3000/users", function handleDeserialize(json) {
+      return User.buildUser(json);
+    });
+  };
+
+  return User;
+}(Model_1.default);
+
+exports.default = User;
+},{"../systems":"ts/systems/index.ts","./Model":"ts/models/Model.ts","./Collection":"ts/models/Collection.ts"}],"ts/models/index.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2496,11 +2504,7 @@ Object.defineProperty(exports, "__esModule", {
 var User_1 = require("./User");
 
 exports.User = User_1.default;
-
-var Collection_1 = require("./Collection");
-
-exports.Collection = Collection_1.default;
-},{"./User":"ts/models/User.ts","./Collection":"ts/models/Collection.ts"}],"ts/index.ts":[function(require,module,exports) {
+},{"./User":"ts/models/User.ts"}],"ts/index.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2509,9 +2513,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var models_1 = require("./models");
 
-var collection = new models_1.Collection("http://localhost:3000/users", function handleDeserialize(json) {
-  return models_1.User.buildUser(json);
-});
+var collection = models_1.User.buildUserCollection();
 collection.on("change", function handleCollectionChange() {
   console.log(collection);
 });

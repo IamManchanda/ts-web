@@ -1,12 +1,6 @@
-import { Collection, User } from "./models";
-import { UserProps } from "./ts-utils";
+import { User } from "./models";
 
-const collection = new Collection<User, UserProps>(
-  "http://localhost:3000/users",
-  function handleDeserialize(json: UserProps): User {
-    return User.buildUser(json);
-  },
-);
+const collection = User.buildUserCollection();
 collection.on("change", function handleCollectionChange(): void {
   console.log(collection);
 });

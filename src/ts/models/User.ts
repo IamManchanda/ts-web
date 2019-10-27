@@ -1,6 +1,7 @@
 import { UserProps } from "../ts-utils/";
 import { Eventing, Syncing, Attributing } from "../systems";
 import Model from "./Model";
+import Collection from "./Collection";
 
 const rootUrl = "http://localhost:3000/users";
 
@@ -10,6 +11,15 @@ class User extends Model<UserProps> {
       new Attributing<UserProps>(attrs),
       new Eventing(),
       new Syncing<UserProps>(rootUrl),
+    );
+  }
+
+  static buildUserCollection(): Collection<User, UserProps> {
+    return new Collection<User, UserProps>(
+      "http://localhost:3000/users",
+      function handleDeserialize(json: UserProps): User {
+        return User.buildUser(json);
+      },
     );
   }
 }
