@@ -2425,15 +2425,14 @@ Object.defineProperty(exports, "__esModule", {
 
 var axios_1 = __importDefault(require("axios"));
 
-var _1 = require(".");
-
 var systems_1 = require("../systems");
 
 var Collection =
 /** @class */
 function () {
-  function Collection(rootUrl) {
+  function Collection(rootUrl, deserialize) {
     this.rootUrl = rootUrl;
+    this.deserialize = deserialize;
     this.models = [];
     this.events = new systems_1.Eventing();
   }
@@ -2470,9 +2469,7 @@ function () {
             data = _a.sent().data;
 
             handleDataIteration = function handleDataIteration(value) {
-              var user = _1.User.buildUser(value);
-
-              _this.models.push(user);
+              _this.models.push(_this.deserialize(value));
             };
 
             data.forEach(handleDataIteration);
@@ -2489,7 +2486,7 @@ function () {
 }();
 
 exports.default = Collection;
-},{"axios":"../node_modules/axios/index.js",".":"ts/models/index.ts","../systems":"ts/systems/index.ts"}],"ts/models/index.ts":[function(require,module,exports) {
+},{"axios":"../node_modules/axios/index.js","../systems":"ts/systems/index.ts"}],"ts/models/index.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2512,7 +2509,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var models_1 = require("./models");
 
-var collection = new models_1.Collection("http://localhost:3000/users");
+var collection = new models_1.Collection("http://localhost:3000/users", function handleDeserialize(json) {
+  return models_1.User.buildUser(json);
+});
 collection.on("change", function handleCollectionChange() {
   console.log(collection);
 });
