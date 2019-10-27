@@ -2111,35 +2111,15 @@ function () {
     this.attributes = attributes;
     this.events = events;
     this.sync = sync;
+    this.getAttr = this.attributes.getAttr;
+    this.on = this.events.on;
+    this.trigger = this.events.trigger;
   }
-
-  Object.defineProperty(Model.prototype, "getAttr", {
-    get: function get() {
-      return this.attributes.getAttr;
-    },
-    enumerable: true,
-    configurable: true
-  });
 
   Model.prototype.setAttr = function (update) {
     this.attributes.setAttr(update);
     this.events.trigger("change");
   };
-
-  Object.defineProperty(Model.prototype, "on", {
-    get: function get() {
-      return this.events.on;
-    },
-    enumerable: true,
-    configurable: true
-  });
-  Object.defineProperty(Model.prototype, "trigger", {
-    get: function get() {
-      return this.events.trigger;
-    },
-    enumerable: true,
-    configurable: true
-  });
 
   Model.prototype.fetch = function () {
     return __awaiter(this, void 0, Promise, function () {
@@ -2347,7 +2327,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54514" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50973" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
