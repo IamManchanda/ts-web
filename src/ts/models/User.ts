@@ -1,53 +1,55 @@
-import { UserProps, EventsData, NumOrStr, CallbackFn } from "../ts-utils/";
-import axios, { AxiosResponse } from "axios";
+import { UserProps } from "../ts-utils/";
+import { Eventing, Syncing, Attributing } from "../systems";
+import { AxiosResponse } from "axios";
+
+const rootUrl = "http://localhost:3000/users";
 
 class User {
-  events: EventsData = {};
+  private attributes: Attributing<UserProps>;
+  private events: Eventing = new Eventing();
+  private sync: Syncing<UserProps> = new Syncing<UserProps>(rootUrl);
 
-  constructor(private data: UserProps) {}
-
-  get(propName: string): NumOrStr {
-    return this.data[propName];
+  constructor(attrs: UserProps) {
+    this.attributes = new Attributing<UserProps>(attrs);
   }
 
-  set(update: UserProps): void {
-    Object.assign(this.data, update);
+  get getAttr() {
+    return this.attributes.getAttr;
   }
 
-  on(eventName: string, callback: CallbackFn): void {
-    const handlers = this.events[eventName] || [];
-    handlers.push(callback);
-    this.events[eventName] = handlers;
+  setAttr(update: UserProps) {
+    this.attributes.setAttr(update);
+    this.events.trigger("change");
   }
 
-  trigger(eventName: string): void {
-    const handlers = this.events[eventName];
-    if (!handlers || handlers.length === 0) return;
-    handlers.forEach(callback => {
-      callback();
-    });
+  get on() {
+    return this.events.on;
   }
 
-  async fetch() {
+  get trigger() {
+    return this.events.trigger;
+  }
+
+  async fetch(): Promise<void> {
+    const id = this.getAttr("id");
+    if (typeof id !== "number") {
+      throw new Error("Can not fetch without an Id");
+    }
     try {
-      const id = this.get("id");
-      const { data }: AxiosResponse = await axios.get(
-        `http://localhost:3000/users/${id}`,
-      );
-      this.set(data);
+      const { data }: AxiosResponse = await this.sync.fetch(id);
+      this.setAttr(data);
     } catch (error) {
       console.error(error);
     }
   }
 
-  async save() {
+  async save(): Promise<void> {
     try {
-      const id = this.get("id");
-      if (id) {
-        await axios.put(`http://localhost:3000/users/${id}`, this.data);
-      } else {
-        await axios.post("http://localhost:3000/users", this.data);
-      }
+      const response: AxiosResponse = await this.sync.save(
+        this.attributes.getAllAttrs(),
+      );
+      this.trigger("save");
+      console.log(response);
     } catch (error) {
       console.error(error);
     }

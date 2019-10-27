@@ -6,6 +6,10 @@ export interface UserProps {
   age?: number;
 }
 
+export interface HasId {
+  id?: number;
+}
+
 export interface EventsData {
   [key: string]: CallbackFn[];
 }

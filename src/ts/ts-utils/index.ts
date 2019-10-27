@@ -1,2 +1,2 @@
-export { UserProps, EventsData } from "./interfaces";
-export { NumOrStr, CallbackFn } from "./types";
+export { UserProps, HasId, EventsData } from "./interfaces";
+export { CallbackFn } from "./types";
