@@ -1,2 +1,9 @@
-export { UserProps, HasId, EventsData } from "./interfaces";
+export {
+  UserProps,
+  HasId,
+  EventsData,
+  ModelAttributes,
+  ModelEvents,
+  ModelSync,
+} from "./interfaces";
 export { CallbackFn } from "./types";

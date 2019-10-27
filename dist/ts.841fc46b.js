@@ -1954,7 +1954,7 @@ exports.Syncing = Syncing_1.default;
 var Attributing_1 = require("./Attributing");
 
 exports.Attributing = Attributing_1.default;
-},{"./Eventing":"ts/systems/Eventing.ts","./Syncing":"ts/systems/Syncing.ts","./Attributing":"ts/systems/Attributing.ts"}],"ts/models/User.ts":[function(require,module,exports) {
+},{"./Eventing":"ts/systems/Eventing.ts","./Syncing":"ts/systems/Syncing.ts","./Attributing":"ts/systems/Attributing.ts"}],"ts/models/Model.ts":[function(require,module,exports) {
 "use strict";
 
 var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
@@ -2104,20 +2104,16 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var systems_1 = require("../systems");
-
-var rootUrl = "http://localhost:3000/users";
-
-var User =
+var Model =
 /** @class */
 function () {
-  function User(attrs) {
-    this.events = new systems_1.Eventing();
-    this.sync = new systems_1.Syncing(rootUrl);
-    this.attributes = new systems_1.Attributing(attrs);
+  function Model(attributes, events, sync) {
+    this.attributes = attributes;
+    this.events = events;
+    this.sync = sync;
   }
 
-  Object.defineProperty(User.prototype, "getAttr", {
+  Object.defineProperty(Model.prototype, "getAttr", {
     get: function get() {
       return this.attributes.getAttr;
     },
@@ -2125,19 +2121,19 @@ function () {
     configurable: true
   });
 
-  User.prototype.setAttr = function (update) {
+  Model.prototype.setAttr = function (update) {
     this.attributes.setAttr(update);
     this.events.trigger("change");
   };
 
-  Object.defineProperty(User.prototype, "on", {
+  Object.defineProperty(Model.prototype, "on", {
     get: function get() {
       return this.events.on;
     },
     enumerable: true,
     configurable: true
   });
-  Object.defineProperty(User.prototype, "trigger", {
+  Object.defineProperty(Model.prototype, "trigger", {
     get: function get() {
       return this.events.trigger;
     },
@@ -2145,7 +2141,7 @@ function () {
     configurable: true
   });
 
-  User.prototype.fetch = function () {
+  Model.prototype.fetch = function () {
     return __awaiter(this, void 0, Promise, function () {
       var id, data, error_1;
       return __generator(this, function (_a) {
@@ -2189,7 +2185,7 @@ function () {
     });
   };
 
-  User.prototype.save = function () {
+  Model.prototype.save = function () {
     return __awaiter(this, void 0, Promise, function () {
       var response, error_2;
       return __generator(this, function (_a) {
@@ -2225,11 +2221,73 @@ function () {
     });
   };
 
-  return User;
+  return Model;
 }();
 
+exports.default = Model;
+},{}],"ts/models/User.ts":[function(require,module,exports) {
+"use strict";
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var systems_1 = require("../systems");
+
+var Model_1 = __importDefault(require("./Model"));
+
+var rootUrl = "http://localhost:3000/users";
+
+var User =
+/** @class */
+function (_super) {
+  __extends(User, _super);
+
+  function User() {
+    return _super !== null && _super.apply(this, arguments) || this;
+  }
+
+  User.buildUser = function (attrs) {
+    return new User(new systems_1.Attributing(attrs), new systems_1.Eventing(), new systems_1.Syncing(rootUrl));
+  };
+
+  return User;
+}(Model_1.default);
+
 exports.default = User;
-},{"../systems":"ts/systems/index.ts"}],"ts/models/index.ts":[function(require,module,exports) {
+},{"../systems":"ts/systems/index.ts","./Model":"ts/models/Model.ts"}],"ts/models/index.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2248,9 +2306,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var models_1 = require("./models");
 
-var user = new models_1.User({
+var user = models_1.User.buildUser({
   id: 1,
-  name: "Mahi",
+  name: "MS Dhoni",
   age: 38
 });
 
@@ -2258,7 +2316,8 @@ var handleUserChange = function handleUserChange() {
   console.log(user);
 };
 
-user.on("save", handleUserChange);
+user.on("change", handleUserChange);
+user.fetch();
 user.save();
 },{"./models":"ts/models/index.ts"}],"../../../../../../.nvm/versions/node/v12.10.0/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
