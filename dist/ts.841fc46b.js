@@ -135,25 +135,15 @@ function () {
   Object.defineProperty(UserForm.prototype, "eventsMap", {
     get: function get() {
       return {
-        "mouseover:h1": this.onHeaderMouseover,
-        "mouseout:h1": this.onHeaderMouseout,
-        "click:button": this.onButtonClick
+        "click:.set-random-age": this.onSetRandomAge
       };
     },
     enumerable: true,
     configurable: true
   });
 
-  UserForm.prototype.onHeaderMouseover = function () {
-    console.log("Header Mouseover'ed!");
-  };
-
-  UserForm.prototype.onHeaderMouseout = function () {
-    console.log("Header Mouseout'ed!");
-  };
-
-  UserForm.prototype.onButtonClick = function () {
-    console.log("Button Click'ed!");
+  UserForm.prototype.onSetRandomAge = function () {
+    console.log("Random Age Set!");
   };
 
   UserForm.prototype.bindEvents = function (fragment) {
@@ -181,7 +171,7 @@ function () {
   };
 
   UserForm.prototype.template = function () {
-    return "\n      <div>\n        <h1>User Form</h1>\n        <div>User Name: " + this.model.getAttr("name") + "</div>\n        <div>User Age: " + this.model.getAttr("age") + "</div>\n        <br />\n        <input />\n        <button>Click me</button>\n      </div>\n    ";
+    return "\n      <div>\n        <h1>User Form</h1>\n        <div>User Name: " + this.model.getAttr("name") + "</div>\n        <div>User Age: " + this.model.getAttr("age") + "</div>\n        <br />\n        <input />\n        <button>Click me</button>\n        <button class=\"set-random-age\">Set Random Age</button>\n      </div>\n    ";
   };
 
   UserForm.prototype.render = function () {

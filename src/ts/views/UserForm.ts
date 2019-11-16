@@ -6,22 +6,12 @@ class UserForm {
 
   get eventsMap(): EventsMapProps {
     return {
-      "mouseover:h1": this.onHeaderMouseover,
-      "mouseout:h1": this.onHeaderMouseout,
-      "click:button": this.onButtonClick,
+      "click:.set-random-age": this.onSetRandomAge,
     };
   }
 
-  onHeaderMouseover(): void {
-    console.log("Header Mouseover'ed!");
-  }
-
-  onHeaderMouseout(): void {
-    console.log("Header Mouseout'ed!");
-  }
-
-  onButtonClick(): void {
-    console.log("Button Click'ed!");
+  onSetRandomAge(): void {
+    console.log("Random Age Set!");
   }
 
   bindEvents(fragment: DocumentFragment): void {
@@ -47,6 +37,7 @@ class UserForm {
         <br />
         <input />
         <button>Click me</button>
+        <button class="set-random-age">Set Random Age</button>
       </div>
     `;
   }
