@@ -8,9 +8,16 @@ class UserForm {
 
   get eventsMap(): EventsMapProps {
     return {
+      "click:.set-name": this.onSetName,
       "click:.set-random-age": this.onSetRandomAge,
     };
   }
+
+  onSetName = (): void => {
+    const input = this.parent.querySelector("input");
+    const newName = input.value;
+    this.model.setName(newName);
+  };
 
   onSetRandomAge = (): void => {
     this.model.setRandomAge();
@@ -43,8 +50,10 @@ class UserForm {
         <h2>User Form</h2>
         <div>User Name: ${this.model.getAttr("name")}</div>
         <div>User Age: ${this.model.getAttr("age")}</div>
-        ${/* <input /> */ ""}
         <br />
+        <input />
+        <button class="set-name">Set Name</button>
+        <br /><br />
         <button class="set-random-age">Set Random Age</button>
       </div>
     `;

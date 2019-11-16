@@ -133,6 +133,14 @@ function () {
     this.parent = parent;
     this.model = model;
 
+    this.onSetName = function () {
+      var input = _this.parent.querySelector("input");
+
+      var newName = input.value;
+
+      _this.model.setName(newName);
+    };
+
     this.onSetRandomAge = function () {
       _this.model.setRandomAge();
     };
@@ -143,6 +151,7 @@ function () {
   Object.defineProperty(UserForm.prototype, "eventsMap", {
     get: function get() {
       return {
+        "click:.set-name": this.onSetName,
         "click:.set-random-age": this.onSetRandomAge
       };
     },
@@ -185,7 +194,7 @@ function () {
   };
 
   UserForm.prototype.template = function () {
-    return "\n      <div style=\"padding: 0 1rem 1rem;\">\n        <h2>User Form</h2>\n        <div>User Name: " + this.model.getAttr("name") + "</div>\n        <div>User Age: " + this.model.getAttr("age") + "</div>\n        " + "" + "\n        <br />\n        <button class=\"set-random-age\">Set Random Age</button>\n      </div>\n    ";
+    return "\n      <div style=\"padding: 0 1rem 1rem;\">\n        <h2>User Form</h2>\n        <div>User Name: " + this.model.getAttr("name") + "</div>\n        <div>User Age: " + this.model.getAttr("age") + "</div>\n        <br />\n        <input />\n        <button class=\"set-name\">Set Name</button>\n        <br /><br />\n        <button class=\"set-random-age\">Set Random Age</button>\n      </div>\n    ";
   };
 
   UserForm.prototype.render = function () {
@@ -2581,6 +2590,12 @@ function (_super) {
   User.buildUserCollection = function () {
     return new Collection_1.default("http://localhost:3000/users", function handleDeserialize(json) {
       return User.buildUser(json);
+    });
+  };
+
+  User.prototype.setName = function (name) {
+    this.setAttr({
+      name: name
     });
   };
 

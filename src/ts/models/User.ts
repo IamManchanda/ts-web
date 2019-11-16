@@ -23,6 +23,10 @@ class User extends Model<UserProps> {
     );
   }
 
+  setName(name): void {
+    this.setAttr({ name });
+  }
+
   setRandomAge(): void {
     const age = Math.round(Math.random() * 100);
     this.setAttr({ age });
