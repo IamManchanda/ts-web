@@ -10,7 +10,7 @@ class User extends Model<UserProps> {
     return new User(
       new Attributing<UserProps>(attrs),
       new Eventing(),
-      new Syncing<UserProps>(rootUrl)
+      new Syncing<UserProps>(rootUrl),
     );
   }
 
@@ -19,8 +19,13 @@ class User extends Model<UserProps> {
       "http://localhost:3000/users",
       function handleDeserialize(json: UserProps): User {
         return User.buildUser(json);
-      }
+      },
     );
+  }
+
+  setRandomAge(): void {
+    const age = Math.round(Math.random() * 100);
+    this.setAttr({ age });
   }
 }
 

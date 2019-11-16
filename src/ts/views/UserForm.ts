@@ -10,9 +10,9 @@ class UserForm {
     };
   }
 
-  onSetRandomAge(): void {
-    console.log("Random Age Set!");
-  }
+  onSetRandomAge = (): void => {
+    this.model.setRandomAge();
+  };
 
   bindEvents(fragment: DocumentFragment): void {
     const { eventsMap } = this;

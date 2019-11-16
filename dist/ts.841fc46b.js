@@ -128,8 +128,14 @@ var UserForm =
 /** @class */
 function () {
   function UserForm(parent, model) {
+    var _this = this;
+
     this.parent = parent;
     this.model = model;
+
+    this.onSetRandomAge = function () {
+      _this.model.setRandomAge();
+    };
   }
 
   Object.defineProperty(UserForm.prototype, "eventsMap", {
@@ -141,10 +147,6 @@ function () {
     enumerable: true,
     configurable: true
   });
-
-  UserForm.prototype.onSetRandomAge = function () {
-    console.log("Random Age Set!");
-  };
 
   UserForm.prototype.bindEvents = function (fragment) {
     var eventsMap = this.eventsMap;
@@ -2566,6 +2568,13 @@ function (_super) {
   User.buildUserCollection = function () {
     return new Collection_1.default("http://localhost:3000/users", function handleDeserialize(json) {
       return User.buildUser(json);
+    });
+  };
+
+  User.prototype.setRandomAge = function () {
+    var age = Math.round(Math.random() * 100);
+    this.setAttr({
+      age: age
     });
   };
 
