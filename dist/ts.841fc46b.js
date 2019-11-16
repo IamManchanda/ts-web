@@ -136,6 +136,8 @@ function () {
     this.onSetRandomAge = function () {
       _this.model.setRandomAge();
     };
+
+    this.bindModel();
   }
 
   Object.defineProperty(UserForm.prototype, "eventsMap", {
@@ -147,6 +149,16 @@ function () {
     enumerable: true,
     configurable: true
   });
+
+  UserForm.prototype.bindModel = function () {
+    var _this = this;
+
+    var handleModelChange = function handleModelChange() {
+      _this.render();
+    };
+
+    this.model.on("change", handleModelChange);
+  };
 
   UserForm.prototype.bindEvents = function (fragment) {
     var eventsMap = this.eventsMap;
@@ -173,10 +185,11 @@ function () {
   };
 
   UserForm.prototype.template = function () {
-    return "\n      <div>\n        <h1>User Form</h1>\n        <div>User Name: " + this.model.getAttr("name") + "</div>\n        <div>User Age: " + this.model.getAttr("age") + "</div>\n        <br />\n        <input />\n        <button>Click me</button>\n        <button class=\"set-random-age\">Set Random Age</button>\n      </div>\n    ";
+    return "\n      <div style=\"padding: 0 1rem 1rem;\">\n        <h2>User Form</h2>\n        <div>User Name: " + this.model.getAttr("name") + "</div>\n        <div>User Age: " + this.model.getAttr("age") + "</div>\n        " + "" + "\n        <br />\n        <button class=\"set-random-age\">Set Random Age</button>\n      </div>\n    ";
   };
 
   UserForm.prototype.render = function () {
+    this.parent.innerHTML = "";
     var templateElement = document.createElement("template");
     templateElement.innerHTML = this.template();
     var fragment = templateElement.content;

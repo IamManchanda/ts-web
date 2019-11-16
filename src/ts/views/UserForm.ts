@@ -2,7 +2,9 @@ import { EventsMapProps } from "../ts-utils/interfaces";
 import { User } from "../models";
 
 class UserForm {
-  constructor(public parent: Element, public model: User) {}
+  constructor(public parent: Element, public model: User) {
+    this.bindModel();
+  }
 
   get eventsMap(): EventsMapProps {
     return {
@@ -13,6 +15,13 @@ class UserForm {
   onSetRandomAge = (): void => {
     this.model.setRandomAge();
   };
+
+  bindModel() {
+    const handleModelChange = () => {
+      this.render();
+    };
+    this.model.on("change", handleModelChange);
+  }
 
   bindEvents(fragment: DocumentFragment): void {
     const { eventsMap } = this;
@@ -30,19 +39,19 @@ class UserForm {
 
   template(): string {
     return `
-      <div>
-        <h1>User Form</h1>
+      <div style="padding: 0 1rem 1rem;">
+        <h2>User Form</h2>
         <div>User Name: ${this.model.getAttr("name")}</div>
         <div>User Age: ${this.model.getAttr("age")}</div>
+        ${/* <input /> */ ""}
         <br />
-        <input />
-        <button>Click me</button>
         <button class="set-random-age">Set Random Age</button>
       </div>
     `;
   }
 
   render(): void {
+    this.parent.innerHTML = "";
     const templateElement = document.createElement("template");
     templateElement.innerHTML = this.template();
     const fragment: DocumentFragment = templateElement.content;
