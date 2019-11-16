@@ -131,8 +131,18 @@ function () {
     this.parent = parent;
   }
 
+  UserForm.prototype.eventsMap = function () {
+    return {
+      "click:button": this.onButtonClick
+    };
+  };
+
+  UserForm.prototype.onButtonClick = function () {
+    console.log("On Button Click");
+  };
+
   UserForm.prototype.template = function () {
-    return "\n      <div>\n        <h1>User Form</h1>\n        <input />\n      </div>\n    ";
+    return "\n      <div>\n        <h1>User Form</h1>\n        <input />\n        <button>Click me</button>\n      </div>\n    ";
   };
 
   UserForm.prototype.render = function () {
@@ -195,7 +205,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50559" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53589" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

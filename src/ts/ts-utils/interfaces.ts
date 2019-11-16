@@ -30,3 +30,7 @@ export interface ModelSync<T> {
   fetch(id: number): AxiosPromise;
   save(data: T): AxiosPromise;
 }
+
+export interface EventsMapProps {
+  [key: string]: () => void;
+}
