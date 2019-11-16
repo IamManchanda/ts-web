@@ -1,7 +1,8 @@
 import { EventsMapProps } from "../ts-utils/interfaces";
+import { User } from "../models";
 
 class UserForm {
-  constructor(public parent: Element) {}
+  constructor(public parent: Element, public model: User) {}
 
   get eventsMap(): EventsMapProps {
     return {
@@ -41,6 +42,9 @@ class UserForm {
     return `
       <div>
         <h1>User Form</h1>
+        <div>User Name: ${this.model.getAttr("name")}</div>
+        <div>User Age: ${this.model.getAttr("age")}</div>
+        <br />
         <input />
         <button>Click me</button>
       </div>
