@@ -131,14 +131,52 @@ function () {
     this.parent = parent;
   }
 
-  UserForm.prototype.eventsMap = function () {
-    return {
-      "click:button": this.onButtonClick
-    };
+  Object.defineProperty(UserForm.prototype, "eventsMap", {
+    get: function get() {
+      return {
+        "mouseover:h1": this.onHeaderMouseover,
+        "mouseout:h1": this.onHeaderMouseout,
+        "click:button": this.onButtonClick
+      };
+    },
+    enumerable: true,
+    configurable: true
+  });
+
+  UserForm.prototype.onHeaderMouseover = function () {
+    console.log("Header Mouseover'ed!");
+  };
+
+  UserForm.prototype.onHeaderMouseout = function () {
+    console.log("Header Mouseout'ed!");
   };
 
   UserForm.prototype.onButtonClick = function () {
-    console.log("On Button Click");
+    console.log("Button Click'ed!");
+  };
+
+  UserForm.prototype.bindEvents = function (fragment) {
+    var eventsMap = this.eventsMap;
+
+    var _loop_1 = function _loop_1(eventKey) {
+      if (eventsMap.hasOwnProperty(eventKey)) {
+        var eventValue_1 = eventsMap[eventKey];
+
+        var _a = eventKey.split(":"),
+            eventName_1 = _a[0],
+            selector = _a[1];
+
+        var querySelectorFragments = function querySelectorFragments(element) {
+          element.addEventListener(eventName_1, eventValue_1);
+        };
+
+        fragment.querySelectorAll(selector).forEach(querySelectorFragments);
+      }
+    };
+
+    for (var eventKey in eventsMap) {
+      _loop_1(eventKey);
+    }
   };
 
   UserForm.prototype.template = function () {
@@ -148,7 +186,9 @@ function () {
   UserForm.prototype.render = function () {
     var templateElement = document.createElement("template");
     templateElement.innerHTML = this.template();
-    this.parent.append(templateElement.content);
+    var fragment = templateElement.content;
+    this.bindEvents(fragment);
+    this.parent.append(fragment);
   };
 
   return UserForm;
