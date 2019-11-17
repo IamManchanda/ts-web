@@ -1,7 +1,8 @@
-import { EventsMapProps } from "../ts-utils/interfaces";
-import { View } from "./View";
+import { EventsMapProps, UserProps } from "../ts-utils/interfaces";
+import View from "./View";
+import { User } from "../models";
 
-class UserForm extends View {
+class UserForm extends View<User, UserProps> {
   get eventsMap(): EventsMapProps {
     return {
       "click:.set-name": this.onSetName,

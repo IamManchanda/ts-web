@@ -179,7 +179,7 @@ function () {
   return View;
 }();
 
-exports.View = View;
+exports.default = View;
 },{}],"ts/views/UserForm.ts":[function(require,module,exports) {
 "use strict";
 
@@ -209,11 +209,17 @@ var __extends = this && this.__extends || function () {
   };
 }();
 
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var View_1 = require("./View");
+var View_1 = __importDefault(require("./View"));
 
 var UserForm =
 /** @class */
@@ -256,7 +262,7 @@ function (_super) {
   };
 
   return UserForm;
-}(View_1.View);
+}(View_1.default);
 
 exports.default = UserForm;
 },{"./View":"ts/views/View.ts"}],"ts/views/index.ts":[function(require,module,exports) {
