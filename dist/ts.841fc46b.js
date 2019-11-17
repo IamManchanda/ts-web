@@ -203,7 +203,7 @@ function () {
   View.prototype.render = function () {
     this.parent.innerHTML = "";
     var templateElement = document.createElement("template");
-    templateElement.innerHTML = this.template();
+    templateElement.innerHTML = this.template;
     var fragment = templateElement.content;
     this.bindEvents(fragment);
     this.mapRegions(fragment);
@@ -298,11 +298,13 @@ function (_super) {
     enumerable: true,
     configurable: true
   });
-
-  UserForm.prototype.template = function () {
-    return "\n      <div>\n        <input placeholder=\"Enter Name\" />\n        <button class=\"set-name\">Set Name</button>\n        <button class=\"set-random-age\">Set Random Age</button>\n        <br /><br />\n        <button class=\"save-user-model\">Save User</button>\n      </div>\n    ";
-  };
-
+  Object.defineProperty(UserForm.prototype, "template", {
+    get: function get() {
+      return "\n      <div>\n        <input placeholder=\"Enter Name\" />\n        <button class=\"set-name\">Set Name</button>\n        <button class=\"set-random-age\">Set Random Age</button>\n        <br /><br />\n        <button class=\"save-user-model\">Save User</button>\n      </div>\n    ";
+    },
+    enumerable: true,
+    configurable: true
+  });
   return UserForm;
 }(View_1.default);
 
@@ -357,10 +359,13 @@ function (_super) {
     return _super !== null && _super.apply(this, arguments) || this;
   }
 
-  UserShow.prototype.template = function () {
-    return "\n      <div>\n        <h2>User Detail</h2>\n        <p>User Name: " + this.model.getAttr("name") + "</p>\n        <p>User Age: " + this.model.getAttr("age") + "</p>\n      </div>\n    ";
-  };
-
+  Object.defineProperty(UserShow.prototype, "template", {
+    get: function get() {
+      return "\n      <div>\n        <h2>User Detail</h2>\n        <p>User Name: " + this.model.getAttr("name") + "</p>\n        <p>User Age: " + this.model.getAttr("age") + "</p>\n      </div>\n    ";
+    },
+    enumerable: true,
+    configurable: true
+  });
   return UserShow;
 }(View_1.default);
 
@@ -435,10 +440,13 @@ function (_super) {
     new UserForm_1.default(this.regions.userForm, this.model).render();
   };
 
-  UserEdit.prototype.template = function () {
-    return "\n      <div style=\"padding: 0 1rem 1rem;\">\n        <div class=\"user-show\"></div>\n        <div class=\"user-form\"></div>\n      </div>\n    ";
-  };
-
+  Object.defineProperty(UserEdit.prototype, "template", {
+    get: function get() {
+      return "\n      <div style=\"padding: 0 1rem 1rem;\">\n        <div class=\"user-show\"></div>\n        <div class=\"user-form\"></div>\n      </div>\n    ";
+    },
+    enumerable: true,
+    configurable: true
+  });
   return UserEdit;
 }(View_1.default);
 

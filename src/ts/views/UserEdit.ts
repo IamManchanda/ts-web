@@ -17,7 +17,7 @@ class UserEdit extends View<User, UserProps> {
     new UserForm(this.regions.userForm, this.model).render();
   }
 
-  template(): string {
+  get template(): string {
     return `
       <div style="padding: 0 1rem 1rem;">
         <div class="user-show"></div>

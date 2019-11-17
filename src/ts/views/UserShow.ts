@@ -3,7 +3,7 @@ import { User } from "../models";
 import { UserProps } from "../ts-utils/interfaces";
 
 class UserShow extends View<User, UserProps> {
-  template(): string {
+  get template(): string {
     return `
       <div>
         <h2>User Detail</h2>

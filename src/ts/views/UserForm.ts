@@ -28,7 +28,7 @@ class UserForm extends View<User, UserProps> {
     console.log("User Saved");
   };
 
-  template(): string {
+  get template(): string {
     return `
       <div>
         <input placeholder="Enter Name" />

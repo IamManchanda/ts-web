@@ -14,7 +14,7 @@ abstract class View<T extends Model<K>, K> {
     this.bindModel();
   }
 
-  abstract template(): string;
+  abstract get template(): string;
 
   get regionsMap(): RegionsMapProps {
     return {};
@@ -63,7 +63,7 @@ abstract class View<T extends Model<K>, K> {
   render(): void {
     this.parent.innerHTML = "";
     const templateElement = document.createElement("template");
-    templateElement.innerHTML = this.template();
+    templateElement.innerHTML = this.template;
     const fragment: DocumentFragment = templateElement.content;
     this.bindEvents(fragment);
     this.mapRegions(fragment);
