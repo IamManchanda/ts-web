@@ -133,6 +133,14 @@ function () {
     this.bindModel();
   }
 
+  Object.defineProperty(View.prototype, "eventsMap", {
+    get: function get() {
+      return {};
+    },
+    enumerable: true,
+    configurable: true
+  });
+
   View.prototype.bindModel = function () {
     var _this = this;
 
@@ -263,7 +271,7 @@ function (_super) {
   });
 
   UserForm.prototype.template = function () {
-    return "\n      <div style=\"padding: 0 1rem 1rem;\">\n        <input placeholder=\"" + this.model.getAttr("name") + "\" />\n        <button class=\"set-name\">Set Name</button>\n        <br /><br />\n        <input placeholder=\"" + this.model.getAttr("age") + "\" disabled />\n        <button class=\"set-random-age\">Set Random Age</button>\n        <br /><br />\n        <button class=\"save-user-model\">Save User</button>\n      </div>\n    ";
+    return "\n      <div>\n        <input placeholder=\"Enter Name\" />\n        <button class=\"set-name\">Set Name</button>\n        <button class=\"set-random-age\">Set Random Age</button>\n        <br /><br />\n        <button class=\"save-user-model\">Save User</button>\n      </div>\n    ";
   };
 
   return UserForm;

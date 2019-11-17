@@ -29,11 +29,9 @@ class UserForm extends View<User, UserProps> {
 
   template(): string {
     return `
-      <div style="padding: 0 1rem 1rem;">
-        <input placeholder="${this.model.getAttr("name")}" />
+      <div>
+        <input placeholder="Enter Name" />
         <button class="set-name">Set Name</button>
-        <br /><br />
-        <input placeholder="${this.model.getAttr("age")}" disabled />
         <button class="set-random-age">Set Random Age</button>
         <br /><br />
         <button class="save-user-model">Save User</button>

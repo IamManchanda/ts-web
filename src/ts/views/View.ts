@@ -6,8 +6,11 @@ abstract class View<T extends Model<K>, K> {
     this.bindModel();
   }
 
-  abstract get eventsMap(): EventsMapProps;
   abstract template(): string;
+
+  get eventsMap(): EventsMapProps {
+    return {};
+  }
 
   bindModel() {
     const handleModelChange = () => {
