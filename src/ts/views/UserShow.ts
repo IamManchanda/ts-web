@@ -6,9 +6,9 @@ class UserShow extends View<User, UserProps> {
   template(): string {
     return `
       <div>
-        <h1>User Detail</h1>
-        <h1>User Name: ${this.model.getAttr("name")}</h1>
-        <h1>User Age: ${this.model.getAttr("age")}</h1>
+        <h2>User Detail</h2>
+        <p>User Name: ${this.model.getAttr("name")}</p>
+        <p>User Age: ${this.model.getAttr("age")}</p>
       </div>
     `;
   }

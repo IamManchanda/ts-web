@@ -1,1 +1,1 @@
-export { default as UserForm } from "./UserForm";
+export { default as UserEdit } from "./UserEdit";

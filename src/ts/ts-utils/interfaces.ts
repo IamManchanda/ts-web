@@ -34,3 +34,11 @@ export interface ModelSync<T> {
 export interface EventsMapProps {
   [key: string]: () => void;
 }
+
+export interface RegionsProps {
+  [key: string]: Element;
+}
+
+export interface RegionsMapProps {
+  [key: string]: string;
+}

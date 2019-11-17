@@ -32,11 +32,8 @@ class Model<T extends HasId> {
 
   async save(): Promise<void> {
     try {
-      const response: AxiosResponse = await this.sync.save(
-        this.attributes.getAllAttrs(),
-      );
+      await this.sync.save(this.attributes.getAllAttrs());
       this.trigger("save");
-      console.log(response);
     } catch (error) {
       console.error(error);
     }

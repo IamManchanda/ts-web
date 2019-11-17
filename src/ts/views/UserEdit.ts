@@ -1,8 +1,22 @@
 import View from "./View";
 import { User } from "../models";
-import { UserProps } from "../ts-utils/interfaces";
+import { UserProps, RegionsMapProps } from "../ts-utils/interfaces";
+import UserForm from "./UserForm";
+import UserShow from "./UserShow";
 
-class UserShow extends View<User, UserProps> {
+class UserEdit extends View<User, UserProps> {
+  get regionsMap(): RegionsMapProps {
+    return {
+      userShow: ".user-show",
+      userForm: ".user-form",
+    };
+  }
+
+  onRender(): void {
+    new UserShow(this.regions.userShow, this.model).render();
+    new UserForm(this.regions.userForm, this.model).render();
+  }
+
   template(): string {
     return `
       <div style="padding: 0 1rem 1rem;">
@@ -13,4 +27,4 @@ class UserShow extends View<User, UserProps> {
   }
 }
 
-export default UserShow;
+export default UserEdit;

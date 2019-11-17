@@ -130,9 +130,17 @@ function () {
   function View(parent, model) {
     this.parent = parent;
     this.model = model;
+    this.regions = {};
     this.bindModel();
   }
 
+  Object.defineProperty(View.prototype, "regionsMap", {
+    get: function get() {
+      return {};
+    },
+    enumerable: true,
+    configurable: true
+  });
   Object.defineProperty(View.prototype, "eventsMap", {
     get: function get() {
       return {};
@@ -140,6 +148,8 @@ function () {
     enumerable: true,
     configurable: true
   });
+
+  View.prototype.onRender = function () {};
 
   View.prototype.bindModel = function () {
     var _this = this;
@@ -175,12 +185,29 @@ function () {
     }
   };
 
+  View.prototype.mapRegions = function (fragment) {
+    var regionsMap = this.regionsMap;
+
+    for (var regionsKey in regionsMap) {
+      if (regionsMap.hasOwnProperty(regionsKey)) {
+        var regionsValue = regionsMap[regionsKey];
+        var element = fragment.querySelector(regionsValue);
+
+        if (element) {
+          this.regions[regionsKey] = element;
+        }
+      }
+    }
+  };
+
   View.prototype.render = function () {
     this.parent.innerHTML = "";
     var templateElement = document.createElement("template");
     templateElement.innerHTML = this.template();
     var fragment = templateElement.content;
     this.bindEvents(fragment);
+    this.mapRegions(fragment);
+    this.onRender();
     this.parent.append(fragment);
   };
 
@@ -253,6 +280,8 @@ function (_super) {
 
     _this.onSaveUserModel = function () {
       _this.model.save();
+
+      console.log("User Saved");
     };
 
     return _this;
@@ -278,17 +307,153 @@ function (_super) {
 }(View_1.default);
 
 exports.default = UserForm;
-},{"./View":"ts/views/View.ts"}],"ts/views/index.ts":[function(require,module,exports) {
+},{"./View":"ts/views/View.ts"}],"ts/views/UserShow.ts":[function(require,module,exports) {
+"use strict";
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var View_1 = __importDefault(require("./View"));
+
+var UserShow =
+/** @class */
+function (_super) {
+  __extends(UserShow, _super);
+
+  function UserShow() {
+    return _super !== null && _super.apply(this, arguments) || this;
+  }
+
+  UserShow.prototype.template = function () {
+    return "\n      <div>\n        <h2>User Detail</h2>\n        <p>User Name: " + this.model.getAttr("name") + "</p>\n        <p>User Age: " + this.model.getAttr("age") + "</p>\n      </div>\n    ";
+  };
+
+  return UserShow;
+}(View_1.default);
+
+exports.default = UserShow;
+},{"./View":"ts/views/View.ts"}],"ts/views/UserEdit.ts":[function(require,module,exports) {
+"use strict";
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var View_1 = __importDefault(require("./View"));
+
+var UserForm_1 = __importDefault(require("./UserForm"));
+
+var UserShow_1 = __importDefault(require("./UserShow"));
+
+var UserEdit =
+/** @class */
+function (_super) {
+  __extends(UserEdit, _super);
+
+  function UserEdit() {
+    return _super !== null && _super.apply(this, arguments) || this;
+  }
+
+  Object.defineProperty(UserEdit.prototype, "regionsMap", {
+    get: function get() {
+      return {
+        userShow: ".user-show",
+        userForm: ".user-form"
+      };
+    },
+    enumerable: true,
+    configurable: true
+  });
+
+  UserEdit.prototype.onRender = function () {
+    new UserShow_1.default(this.regions.userShow, this.model).render();
+    new UserForm_1.default(this.regions.userForm, this.model).render();
+  };
+
+  UserEdit.prototype.template = function () {
+    return "\n      <div style=\"padding: 0 1rem 1rem;\">\n        <div class=\"user-show\"></div>\n        <div class=\"user-form\"></div>\n      </div>\n    ";
+  };
+
+  return UserEdit;
+}(View_1.default);
+
+exports.default = UserEdit;
+},{"./View":"ts/views/View.ts","./UserForm":"ts/views/UserForm.ts","./UserShow":"ts/views/UserShow.ts"}],"ts/views/index.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var UserForm_1 = require("./UserForm");
+var UserEdit_1 = require("./UserEdit");
 
-exports.UserForm = UserForm_1.default;
-},{"./UserForm":"ts/views/UserForm.ts"}],"ts/systems/Eventing.ts":[function(require,module,exports) {
+exports.UserEdit = UserEdit_1.default;
+},{"./UserEdit":"ts/views/UserEdit.ts"}],"ts/systems/Eventing.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2338,7 +2503,7 @@ function () {
 
   Model.prototype.save = function () {
     return __awaiter(this, void 0, Promise, function () {
-      var response, error_2;
+      var error_2;
       return __generator(this, function (_a) {
         switch (_a.label) {
           case 0:
@@ -2349,9 +2514,9 @@ function () {
             , this.sync.save(this.attributes.getAllAttrs())];
 
           case 1:
-            response = _a.sent();
+            _a.sent();
+
             this.trigger("save");
-            console.log(response);
             return [3
             /*break*/
             , 3];
@@ -2706,8 +2871,8 @@ var userData = models_1.User.buildUser({
 });
 
 if (userRoot) {
-  var userForm = new views_1.UserForm(userRoot, userData);
-  userForm.render();
+  var userEdit = new views_1.UserEdit(userRoot, userData);
+  userEdit.render();
 } else {
   console.log("Root Element not Found!");
 }

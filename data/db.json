@@ -1,5 +1,6 @@
 {
-  "users": [{
+  "users": [
+    {
       "id": 1,
       "name": "MS Dhoni",
       "age": 38
@@ -23,6 +24,21 @@
       "name": "Harry",
       "age": 26,
       "id": 5
+    },
+    {
+      "name": "Rohit Sharma",
+      "age": 31,
+      "id": 6
+    },
+    {
+      "name": "Virat Kohli",
+      "age": 34,
+      "id": 7
+    },
+    {
+      "name": "Mayank Agarwal",
+      "age": 28,
+      "id": 8
     }
   ]
 }

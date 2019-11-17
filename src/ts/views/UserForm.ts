@@ -25,6 +25,7 @@ class UserForm extends View<User, UserProps> {
 
   onSaveUserModel = (): void => {
     this.model.save();
+    console.log("User Saved");
   };
 
   template(): string {
