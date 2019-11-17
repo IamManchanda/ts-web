@@ -243,6 +243,10 @@ function (_super) {
       _this.model.setRandomAge();
     };
 
+    _this.onSaveUserModel = function () {
+      _this.model.save();
+    };
+
     return _this;
   }
 
@@ -250,7 +254,8 @@ function (_super) {
     get: function get() {
       return {
         "click:.set-name": this.onSetName,
-        "click:.set-random-age": this.onSetRandomAge
+        "click:.set-random-age": this.onSetRandomAge,
+        "click:.save-user-model": this.onSaveUserModel
       };
     },
     enumerable: true,
@@ -258,7 +263,7 @@ function (_super) {
   });
 
   UserForm.prototype.template = function () {
-    return "\n      <div style=\"padding: 0 1rem 1rem;\">\n        <h2>User Form</h2>\n        <div>User Name: " + this.model.getAttr("name") + "</div>\n        <div>User Age: " + this.model.getAttr("age") + "</div>\n        <br />\n        <input />\n        <button class=\"set-name\">Set Name</button>\n        <br /><br />\n        <button class=\"set-random-age\">Set Random Age</button>\n      </div>\n    ";
+    return "\n      <div style=\"padding: 0 1rem 1rem;\">\n        <input placeholder=\"" + this.model.getAttr("name") + "\" />\n        <button class=\"set-name\">Set Name</button>\n        <br /><br />\n        <input placeholder=\"" + this.model.getAttr("age") + "\" disabled />\n        <button class=\"set-random-age\">Set Random Age</button>\n        <br /><br />\n        <button class=\"save-user-model\">Save User</button>\n      </div>\n    ";
   };
 
   return UserForm;

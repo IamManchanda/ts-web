@@ -9,6 +9,16 @@
       "name": "Virat Kohli",
       "age": 30,
       "id": 2
+    },
+    {
+      "name": "Mayank Agarwal",
+      "age": 28,
+      "id": 3
+    },
+    {
+      "name": "Rohit Sharma",
+      "age": 22,
+      "id": 4
     }
   ]
 }
