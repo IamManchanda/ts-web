@@ -136,9 +136,11 @@ function () {
     this.onSetName = function () {
       var input = _this.parent.querySelector("input");
 
-      var newName = input.value;
+      if (input) {
+        var newName = input.value;
 
-      _this.model.setName(newName);
+        _this.model.setName(newName);
+      }
     };
 
     this.onSetRandomAge = function () {
@@ -180,11 +182,11 @@ function () {
             eventName_1 = _a[0],
             selector = _a[1];
 
-        var querySelectorFragments = function querySelectorFragments(element) {
+        var iterateFragmentSelectors = function iterateFragmentSelectors(element) {
           element.addEventListener(eventName_1, eventValue_1);
         };
 
-        fragment.querySelectorAll(selector).forEach(querySelectorFragments);
+        fragment.querySelectorAll(selector).forEach(iterateFragmentSelectors);
       }
     };
 
@@ -2636,8 +2638,13 @@ var userData = models_1.User.buildUser({
   name: "Mayank Agarwal",
   age: 28
 });
-var userForm = new views_1.UserForm(userRoot, userData);
-userForm.render();
+
+if (userRoot) {
+  var userForm = new views_1.UserForm(userRoot, userData);
+  userForm.render();
+} else {
+  console.log("Root Element not Found!");
+}
 },{"./views":"ts/views/index.ts","./models":"ts/models/index.ts"}],"../../../../../../.nvm/versions/node/v12.10.0/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -2666,7 +2673,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53589" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64642" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

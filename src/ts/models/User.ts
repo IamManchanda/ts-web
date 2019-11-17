@@ -23,7 +23,7 @@ class User extends Model<UserProps> {
     );
   }
 
-  setName(name): void {
+  setName(name: string): void {
     this.setAttr({ name });
   }
 

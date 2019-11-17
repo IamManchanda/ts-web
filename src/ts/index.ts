@@ -6,5 +6,9 @@ const userData = User.buildUser({
   name: "Mayank Agarwal",
   age: 28,
 });
-const userForm = new UserForm(userRoot, userData);
-userForm.render();
+if (userRoot) {
+  const userForm = new UserForm(userRoot, userData);
+  userForm.render();
+} else {
+  console.log("Root Element not Found!");
+}

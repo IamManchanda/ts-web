@@ -15,8 +15,10 @@ class UserForm {
 
   onSetName = (): void => {
     const input = this.parent.querySelector("input");
-    const newName = input.value;
-    this.model.setName(newName);
+    if (input) {
+      const newName = input.value;
+      this.model.setName(newName);
+    }
   };
 
   onSetRandomAge = (): void => {
@@ -36,10 +38,10 @@ class UserForm {
       if (eventsMap.hasOwnProperty(eventKey)) {
         const eventValue = eventsMap[eventKey];
         const [eventName, selector] = eventKey.split(":");
-        const querySelectorFragments = element => {
+        const iterateFragmentSelectors = (element: any) => {
           element.addEventListener(eventName, eventValue);
         };
-        fragment.querySelectorAll(selector).forEach(querySelectorFragments);
+        fragment.querySelectorAll(selector).forEach(iterateFragmentSelectors);
       }
     }
   }
