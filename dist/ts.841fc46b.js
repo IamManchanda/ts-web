@@ -117,7 +117,40 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"ts/views/View.ts":[function(require,module,exports) {
+})({"ts/views/CollectionView.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var CollectionView =
+/** @class */
+function () {
+  function CollectionView(parent, collection) {
+    this.parent = parent;
+    this.collection = collection;
+  }
+
+  CollectionView.prototype.render = function () {
+    this.parent.innerHTML = "";
+    var templateElement = document.createElement("template");
+
+    for (var _i = 0, _a = this.collection.models; _i < _a.length; _i++) {
+      var model = _a[_i];
+      var itemParent = document.createElement("div");
+      this.renderItem(model, itemParent);
+      templateElement.content.append(itemParent);
+    }
+
+    this.parent.append(templateElement.content);
+  };
+
+  return CollectionView;
+}();
+
+exports.default = CollectionView;
+},{}],"ts/views/View.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -215,101 +248,7 @@ function () {
 }();
 
 exports.default = View;
-},{}],"ts/views/UserForm.ts":[function(require,module,exports) {
-"use strict";
-
-var __extends = this && this.__extends || function () {
-  var _extendStatics = function extendStatics(d, b) {
-    _extendStatics = Object.setPrototypeOf || {
-      __proto__: []
-    } instanceof Array && function (d, b) {
-      d.__proto__ = b;
-    } || function (d, b) {
-      for (var p in b) {
-        if (b.hasOwnProperty(p)) d[p] = b[p];
-      }
-    };
-
-    return _extendStatics(d, b);
-  };
-
-  return function (d, b) {
-    _extendStatics(d, b);
-
-    function __() {
-      this.constructor = d;
-    }
-
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-  };
-}();
-
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var View_1 = __importDefault(require("./View"));
-
-var UserForm =
-/** @class */
-function (_super) {
-  __extends(UserForm, _super);
-
-  function UserForm() {
-    var _this = _super !== null && _super.apply(this, arguments) || this;
-
-    _this.onSetName = function () {
-      var input = _this.parent.querySelector("input");
-
-      if (input) {
-        var newName = input.value;
-
-        _this.model.setName(newName);
-      }
-    };
-
-    _this.onSetRandomAge = function () {
-      _this.model.setRandomAge();
-    };
-
-    _this.onSaveUserModel = function () {
-      _this.model.save();
-
-      console.log("User Saved");
-    };
-
-    return _this;
-  }
-
-  Object.defineProperty(UserForm.prototype, "eventsMap", {
-    get: function get() {
-      return {
-        "click:.set-name": this.onSetName,
-        "click:.set-random-age": this.onSetRandomAge,
-        "click:.save-user-model": this.onSaveUserModel
-      };
-    },
-    enumerable: true,
-    configurable: true
-  });
-  Object.defineProperty(UserForm.prototype, "template", {
-    get: function get() {
-      return "\n      <div>\n        <input placeholder=\"Enter Name\" />\n        <button class=\"set-name\">Set Name</button>\n        <button class=\"set-random-age\">Set Random Age</button>\n        <br /><br />\n        <button class=\"save-user-model\">Save User</button>\n      </div>\n    ";
-    },
-    enumerable: true,
-    configurable: true
-  });
-  return UserForm;
-}(View_1.default);
-
-exports.default = UserForm;
-},{"./View":"ts/views/View.ts"}],"ts/views/UserShow.ts":[function(require,module,exports) {
+},{}],"ts/views/UserShow.ts":[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -370,7 +309,7 @@ function (_super) {
 }(View_1.default);
 
 exports.default = UserShow;
-},{"./View":"ts/views/View.ts"}],"ts/views/UserEdit.ts":[function(require,module,exports) {
+},{"./View":"ts/views/View.ts"}],"ts/views/UserList.ts":[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -409,93 +348,28 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var View_1 = __importDefault(require("./View"));
-
-var UserForm_1 = __importDefault(require("./UserForm"));
+var CollectionView_1 = __importDefault(require("./CollectionView"));
 
 var UserShow_1 = __importDefault(require("./UserShow"));
 
-var UserEdit =
+var UserList =
 /** @class */
 function (_super) {
-  __extends(UserEdit, _super);
+  __extends(UserList, _super);
 
-  function UserEdit() {
+  function UserList() {
     return _super !== null && _super.apply(this, arguments) || this;
   }
 
-  Object.defineProperty(UserEdit.prototype, "regionsMap", {
-    get: function get() {
-      return {
-        userShow: ".user-show",
-        userForm: ".user-form"
-      };
-    },
-    enumerable: true,
-    configurable: true
-  });
-
-  UserEdit.prototype.onRender = function () {
-    new UserShow_1.default(this.regions.userShow, this.model).render();
-    new UserForm_1.default(this.regions.userForm, this.model).render();
+  UserList.prototype.renderItem = function (model, itemParent) {
+    new UserShow_1.default(itemParent, model).render();
   };
 
-  Object.defineProperty(UserEdit.prototype, "template", {
-    get: function get() {
-      return "\n      <div style=\"padding: 0 1rem 1rem;\">\n        <div class=\"user-show\"></div>\n        <div class=\"user-form\"></div>\n      </div>\n    ";
-    },
-    enumerable: true,
-    configurable: true
-  });
-  return UserEdit;
-}(View_1.default);
+  return UserList;
+}(CollectionView_1.default);
 
-exports.default = UserEdit;
-},{"./View":"ts/views/View.ts","./UserForm":"ts/views/UserForm.ts","./UserShow":"ts/views/UserShow.ts"}],"ts/views/index.ts":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var UserEdit_1 = require("./UserEdit");
-
-exports.UserEdit = UserEdit_1.default;
-},{"./UserEdit":"ts/views/UserEdit.ts"}],"ts/systems/Eventing.ts":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var Eventing =
-/** @class */
-function () {
-  function Eventing() {
-    var _this = this;
-
-    this.events = {};
-
-    this.on = function (eventName, callback) {
-      var handlers = _this.events[eventName] || [];
-      handlers.push(callback);
-      _this.events[eventName] = handlers;
-    };
-
-    this.trigger = function (eventName) {
-      var handlers = _this.events[eventName];
-      if (!handlers || handlers.length === 0) return;
-      handlers.forEach(function (callback) {
-        callback();
-      });
-    };
-  }
-
-  return Eventing;
-}();
-
-exports.default = Eventing;
-},{}],"../node_modules/axios/lib/helpers/bind.js":[function(require,module,exports) {
+exports.default = UserList;
+},{"./CollectionView":"ts/views/CollectionView.ts","./UserShow":"ts/views/UserShow.ts"}],"../node_modules/axios/lib/helpers/bind.js":[function(require,module,exports) {
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -2208,7 +2082,41 @@ module.exports.default = axios;
 
 },{"./utils":"../node_modules/axios/lib/utils.js","./helpers/bind":"../node_modules/axios/lib/helpers/bind.js","./core/Axios":"../node_modules/axios/lib/core/Axios.js","./core/mergeConfig":"../node_modules/axios/lib/core/mergeConfig.js","./defaults":"../node_modules/axios/lib/defaults.js","./cancel/Cancel":"../node_modules/axios/lib/cancel/Cancel.js","./cancel/CancelToken":"../node_modules/axios/lib/cancel/CancelToken.js","./cancel/isCancel":"../node_modules/axios/lib/cancel/isCancel.js","./helpers/spread":"../node_modules/axios/lib/helpers/spread.js"}],"../node_modules/axios/index.js":[function(require,module,exports) {
 module.exports = require('./lib/axios');
-},{"./lib/axios":"../node_modules/axios/lib/axios.js"}],"ts/systems/Syncing.ts":[function(require,module,exports) {
+},{"./lib/axios":"../node_modules/axios/lib/axios.js"}],"ts/systems/Eventing.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var Eventing =
+/** @class */
+function () {
+  function Eventing() {
+    var _this = this;
+
+    this.events = {};
+
+    this.on = function (eventName, callback) {
+      var handlers = _this.events[eventName] || [];
+      handlers.push(callback);
+      _this.events[eventName] = handlers;
+    };
+
+    this.trigger = function (eventName) {
+      var handlers = _this.events[eventName];
+      if (!handlers || handlers.length === 0) return;
+      handlers.forEach(function (callback) {
+        callback();
+      });
+    };
+  }
+
+  return Eventing;
+}();
+
+exports.default = Eventing;
+},{}],"ts/systems/Syncing.ts":[function(require,module,exports) {
 "use strict";
 
 var __importDefault = this && this.__importDefault || function (mod) {
@@ -2298,7 +2206,226 @@ exports.Syncing = Syncing_1.default;
 var Attributing_1 = require("./Attributing");
 
 exports.Attributing = Attributing_1.default;
-},{"./Eventing":"ts/systems/Eventing.ts","./Syncing":"ts/systems/Syncing.ts","./Attributing":"ts/systems/Attributing.ts"}],"ts/models/Model.ts":[function(require,module,exports) {
+},{"./Eventing":"ts/systems/Eventing.ts","./Syncing":"ts/systems/Syncing.ts","./Attributing":"ts/systems/Attributing.ts"}],"ts/models/Collection.ts":[function(require,module,exports) {
+"use strict";
+
+var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
+  function adopt(value) {
+    return value instanceof P ? value : new P(function (resolve) {
+      resolve(value);
+    });
+  }
+
+  return new (P || (P = Promise))(function (resolve, reject) {
+    function fulfilled(value) {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function rejected(value) {
+      try {
+        step(generator["throw"](value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function step(result) {
+      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+    }
+
+    step((generator = generator.apply(thisArg, _arguments || [])).next());
+  });
+};
+
+var __generator = this && this.__generator || function (thisArg, body) {
+  var _ = {
+    label: 0,
+    sent: function sent() {
+      if (t[0] & 1) throw t[1];
+      return t[1];
+    },
+    trys: [],
+    ops: []
+  },
+      f,
+      y,
+      t,
+      g;
+  return g = {
+    next: verb(0),
+    "throw": verb(1),
+    "return": verb(2)
+  }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
+    return this;
+  }), g;
+
+  function verb(n) {
+    return function (v) {
+      return step([n, v]);
+    };
+  }
+
+  function step(op) {
+    if (f) throw new TypeError("Generator is already executing.");
+
+    while (_) {
+      try {
+        if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+        if (y = 0, t) op = [op[0] & 2, t.value];
+
+        switch (op[0]) {
+          case 0:
+          case 1:
+            t = op;
+            break;
+
+          case 4:
+            _.label++;
+            return {
+              value: op[1],
+              done: false
+            };
+
+          case 5:
+            _.label++;
+            y = op[1];
+            op = [0];
+            continue;
+
+          case 7:
+            op = _.ops.pop();
+
+            _.trys.pop();
+
+            continue;
+
+          default:
+            if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+              _ = 0;
+              continue;
+            }
+
+            if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
+              _.label = op[1];
+              break;
+            }
+
+            if (op[0] === 6 && _.label < t[1]) {
+              _.label = t[1];
+              t = op;
+              break;
+            }
+
+            if (t && _.label < t[2]) {
+              _.label = t[2];
+
+              _.ops.push(op);
+
+              break;
+            }
+
+            if (t[2]) _.ops.pop();
+
+            _.trys.pop();
+
+            continue;
+        }
+
+        op = body.call(thisArg, _);
+      } catch (e) {
+        op = [6, e];
+        y = 0;
+      } finally {
+        f = t = 0;
+      }
+    }
+
+    if (op[0] & 5) throw op[1];
+    return {
+      value: op[0] ? op[1] : void 0,
+      done: true
+    };
+  }
+};
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var axios_1 = __importDefault(require("axios"));
+
+var systems_1 = require("../systems");
+
+var Collection =
+/** @class */
+function () {
+  function Collection(rootUrl, deserialize) {
+    this.rootUrl = rootUrl;
+    this.deserialize = deserialize;
+    this.models = [];
+    this.events = new systems_1.Eventing();
+  }
+
+  Object.defineProperty(Collection.prototype, "on", {
+    get: function get() {
+      return this.events.on;
+    },
+    enumerable: true,
+    configurable: true
+  });
+  Object.defineProperty(Collection.prototype, "trigger", {
+    get: function get() {
+      return this.events.trigger;
+    },
+    enumerable: true,
+    configurable: true
+  });
+
+  Collection.prototype.fetch = function () {
+    return __awaiter(this, void 0, Promise, function () {
+      var data, handleDataIteration;
+
+      var _this = this;
+
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            return [4
+            /*yield*/
+            , axios_1.default.get(this.rootUrl)];
+
+          case 1:
+            data = _a.sent().data;
+
+            handleDataIteration = function handleDataIteration(value) {
+              _this.models.push(_this.deserialize(value));
+            };
+
+            data.forEach(handleDataIteration);
+            this.trigger("change");
+            return [2
+            /*return*/
+            ];
+        }
+      });
+    });
+  };
+
+  return Collection;
+}();
+
+exports.default = Collection;
+},{"axios":"../node_modules/axios/index.js","../systems":"ts/systems/index.ts"}],"ts/models/Model.ts":[function(require,module,exports) {
 "use strict";
 
 var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
@@ -2549,226 +2676,7 @@ function () {
 }();
 
 exports.default = Model;
-},{}],"ts/models/Collection.ts":[function(require,module,exports) {
-"use strict";
-
-var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
-  function adopt(value) {
-    return value instanceof P ? value : new P(function (resolve) {
-      resolve(value);
-    });
-  }
-
-  return new (P || (P = Promise))(function (resolve, reject) {
-    function fulfilled(value) {
-      try {
-        step(generator.next(value));
-      } catch (e) {
-        reject(e);
-      }
-    }
-
-    function rejected(value) {
-      try {
-        step(generator["throw"](value));
-      } catch (e) {
-        reject(e);
-      }
-    }
-
-    function step(result) {
-      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-    }
-
-    step((generator = generator.apply(thisArg, _arguments || [])).next());
-  });
-};
-
-var __generator = this && this.__generator || function (thisArg, body) {
-  var _ = {
-    label: 0,
-    sent: function sent() {
-      if (t[0] & 1) throw t[1];
-      return t[1];
-    },
-    trys: [],
-    ops: []
-  },
-      f,
-      y,
-      t,
-      g;
-  return g = {
-    next: verb(0),
-    "throw": verb(1),
-    "return": verb(2)
-  }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
-    return this;
-  }), g;
-
-  function verb(n) {
-    return function (v) {
-      return step([n, v]);
-    };
-  }
-
-  function step(op) {
-    if (f) throw new TypeError("Generator is already executing.");
-
-    while (_) {
-      try {
-        if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-        if (y = 0, t) op = [op[0] & 2, t.value];
-
-        switch (op[0]) {
-          case 0:
-          case 1:
-            t = op;
-            break;
-
-          case 4:
-            _.label++;
-            return {
-              value: op[1],
-              done: false
-            };
-
-          case 5:
-            _.label++;
-            y = op[1];
-            op = [0];
-            continue;
-
-          case 7:
-            op = _.ops.pop();
-
-            _.trys.pop();
-
-            continue;
-
-          default:
-            if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
-              _ = 0;
-              continue;
-            }
-
-            if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
-              _.label = op[1];
-              break;
-            }
-
-            if (op[0] === 6 && _.label < t[1]) {
-              _.label = t[1];
-              t = op;
-              break;
-            }
-
-            if (t && _.label < t[2]) {
-              _.label = t[2];
-
-              _.ops.push(op);
-
-              break;
-            }
-
-            if (t[2]) _.ops.pop();
-
-            _.trys.pop();
-
-            continue;
-        }
-
-        op = body.call(thisArg, _);
-      } catch (e) {
-        op = [6, e];
-        y = 0;
-      } finally {
-        f = t = 0;
-      }
-    }
-
-    if (op[0] & 5) throw op[1];
-    return {
-      value: op[0] ? op[1] : void 0,
-      done: true
-    };
-  }
-};
-
-var __importDefault = this && this.__importDefault || function (mod) {
-  return mod && mod.__esModule ? mod : {
-    "default": mod
-  };
-};
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var axios_1 = __importDefault(require("axios"));
-
-var systems_1 = require("../systems");
-
-var Collection =
-/** @class */
-function () {
-  function Collection(rootUrl, deserialize) {
-    this.rootUrl = rootUrl;
-    this.deserialize = deserialize;
-    this.models = [];
-    this.events = new systems_1.Eventing();
-  }
-
-  Object.defineProperty(Collection.prototype, "on", {
-    get: function get() {
-      return this.events.on;
-    },
-    enumerable: true,
-    configurable: true
-  });
-  Object.defineProperty(Collection.prototype, "trigger", {
-    get: function get() {
-      return this.events.trigger;
-    },
-    enumerable: true,
-    configurable: true
-  });
-
-  Collection.prototype.fetch = function () {
-    return __awaiter(this, void 0, Promise, function () {
-      var data, handleDataIteration;
-
-      var _this = this;
-
-      return __generator(this, function (_a) {
-        switch (_a.label) {
-          case 0:
-            return [4
-            /*yield*/
-            , axios_1.default.get(this.rootUrl)];
-
-          case 1:
-            data = _a.sent().data;
-
-            handleDataIteration = function handleDataIteration(value) {
-              _this.models.push(_this.deserialize(value));
-            };
-
-            data.forEach(handleDataIteration);
-            this.trigger("change");
-            return [2
-            /*return*/
-            ];
-        }
-      });
-    });
-  };
-
-  return Collection;
-}();
-
-exports.default = Collection;
-},{"axios":"../node_modules/axios/index.js","../systems":"ts/systems/index.ts"}],"ts/models/User.ts":[function(require,module,exports) {
+},{}],"ts/models/User.ts":[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -2864,27 +2772,39 @@ exports.User = User_1.default;
 },{"./User":"ts/models/User.ts"}],"ts/index.ts":[function(require,module,exports) {
 "use strict";
 
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var views_1 = require("./views");
+var UserList_1 = __importDefault(require("./views/UserList"));
+
+var Collection_1 = __importDefault(require("./models/Collection"));
 
 var models_1 = require("./models");
 
-var userRoot = document.getElementById("root");
-var userData = models_1.User.buildUser({
-  name: "Mayank Agarwal",
-  age: 28
-});
+var fetchUsersData = function fetchUsersData(data) {
+  return models_1.User.buildUser(data);
+};
 
-if (userRoot) {
-  var userEdit = new views_1.UserEdit(userRoot, userData);
-  userEdit.render();
-} else {
-  console.log("Root Element not Found!");
-}
-},{"./views":"ts/views/index.ts","./models":"ts/models/index.ts"}],"../../../../../../.nvm/versions/node/v12.10.0/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+var users = new Collection_1.default("http://localhost:3000/users", fetchUsersData);
+
+var handleUsersChange = function handleUsersChange() {
+  var root = document.getElementById("root");
+
+  if (root) {
+    new UserList_1.default(root, users).render();
+  }
+};
+
+users.on("change", handleUsersChange);
+users.fetch();
+},{"./views/UserList":"ts/views/UserList.ts","./models/Collection":"ts/models/Collection.ts","./models":"ts/models/index.ts"}],"../../../../../../.nvm/versions/node/v12.10.0/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;

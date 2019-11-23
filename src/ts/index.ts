@@ -1,15 +1,16 @@
-import { UserEdit } from "./views";
+import UserList from "./views/UserList";
+import Collection from "./models/Collection";
+import { UserProps } from "./ts-utils";
 import { User } from "./models";
 
-const userRoot = document.getElementById("root");
-const userData = User.buildUser({
-  name: "Mayank Agarwal",
-  age: 28,
-});
+const fetchUsersData = (data: UserProps) => User.buildUser(data);
+const users = new Collection("http://localhost:3000/users", fetchUsersData);
 
-if (userRoot) {
-  const userEdit = new UserEdit(userRoot, userData);
-  userEdit.render();
-} else {
-  console.log("Root Element not Found!");
-}
+const handleUsersChange = () => {
+  const root = document.getElementById("root");
+  if (root) {
+    new UserList(root, users).render();
+  }
+};
+users.on("change", handleUsersChange);
+users.fetch();
